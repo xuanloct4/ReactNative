@@ -1,6 +1,6 @@
 {
-	"description": "React Native Mapview component for iOS + Android",
-	  "author": "Leland Richardson <leland.m.richardson@gmail.com>",
+  "description": "React Native Mapview component for iOS + Android",
+  "author": "Leland Richardson <leland.m.richardson@gmail.com>",
   "name": "LiveInstagram",
   "version": "0.0.1",
   "license": "MIT",
@@ -15,39 +15,39 @@
     "jsxBracketSameLine": true,
     "parser": "flow"
   },
-  
   "private": true,
   "scripts": {
+    "react-devtools": "react-devtools",
     "start": "node node_modules/react-native/local-cli/cli.js start",
-	"start:expo": "react-native-scripts start",
+    "start:expo": "react-native-scripts start",
     "eject": "react-native-scripts eject",
     "android": "react-native-scripts android",
     "ios": "react-native-scripts ios",
     "test": "jest",
     "run:packager": "./node_modules/react-native/packager/packager.sh",
-       "run:ios": "react-native run-ios --project-path ./ios",
-       "start:android": "adb shell am start -n com.liveinstagram.MainActivity",
-       "run:android": "./gradlew installDebug && npm run start:android",
-       "lint": "eslint ./",
-       "build": "npm run build:js && npm run build:android && npm run build:ios",
-       "build:js": "exit 0",
-       "build:ios": "bundle install --path ./ios/bundles && bundle exec pod install --project-directory=./ios/",
-       "build:android": "./gradlew :react-native-maps:assembleDebug",
-       "ci": "npm run lint",
-       "preversion": "./scripts/update-version.js",
-	   "test-ci": "JEST_JUNIT_OUTPUT=\"reports/junit/js-test-results.xml\" jest --maxWorkers=2 --ci --testResultsProcessor=\"jest-junit\"",
-	     "flow": "flow",
-	     "prettier": "find . -name node_modules -prune -or -name '*.js' -print | xargs prettier --write",
-	     "docker-setup-android": "docker pull reactnativeci/android-base:latest",
-	     "docker-build-android-base": "docker build -t reactnativeci/android-base -f ContainerShip/Dockerfile.android-base .",
-	     "docker-build-android": "docker build -t reactnativeci/android -f ContainerShip/Dockerfile.android .",
-	     "test-android-run-instrumentation": "docker run --cap-add=SYS_ADMIN -it react/android bash ContainerShip/scripts/run-android-docker-instrumentation-tests.sh",
-	     "test-android-run-unit": "docker run --cap-add=SYS_ADMIN -it react/android bash ContainerShip/scripts/run-android-docker-unit-tests.sh",
-	     "test-android-run-e2e": "docker run --privileged -it react/android bash ContainerShip/scripts/run-ci-e2e-tests.sh --android --js",
-	     "test-android-all": "yarn run docker-build-android && yarn run test-android-run-unit && yarn run test-android-run-instrumentation && yarn run test-android-run-e2e",
-	     "test-android-instrumentation": "yarn run docker-build-android && yarn run test-android-run-instrumentation",
-	     "test-android-unit": "yarn run docker-build-android && yarn run test-android-run-unit",
-	     "test-android-e2e": "yarn run docker-build-android && yarn run test-android-run-e2e"
+    "run:ios": "react-native run-ios --project-path ./ios",
+    "start:android": "adb shell am start -n com.liveinstagram.MainActivity",
+    "run:android": "./gradlew installDebug && npm run start:android",
+    "lint": "eslint ./",
+    "build": "npm run build:js && npm run build:android && npm run build:ios",
+    "build:js": "exit 0",
+    "build:ios": "bundle install --path ./ios/bundles && bundle exec pod install --project-directory=./ios/",
+    "build:android": "./gradlew :react-native-maps:assembleDebug",
+    "ci": "npm run lint",
+    "preversion": "./scripts/update-version.js",
+    "test-ci": "JEST_JUNIT_OUTPUT=\"reports/junit/js-test-results.xml\" jest --maxWorkers=2 --ci --testResultsProcessor=\"jest-junit\"",
+    "flow": "flow",
+    "prettier": "find . -name node_modules -prune -or -name '*.js' -print | xargs prettier --write",
+    "docker-setup-android": "docker pull reactnativeci/android-base:latest",
+    "docker-build-android-base": "docker build -t reactnativeci/android-base -f ContainerShip/Dockerfile.android-base .",
+    "docker-build-android": "docker build -t reactnativeci/android -f ContainerShip/Dockerfile.android .",
+    "test-android-run-instrumentation": "docker run --cap-add=SYS_ADMIN -it react/android bash ContainerShip/scripts/run-android-docker-instrumentation-tests.sh",
+    "test-android-run-unit": "docker run --cap-add=SYS_ADMIN -it react/android bash ContainerShip/scripts/run-android-docker-unit-tests.sh",
+    "test-android-run-e2e": "docker run --privileged -it react/android bash ContainerShip/scripts/run-ci-e2e-tests.sh --android --js",
+    "test-android-all": "yarn run docker-build-android && yarn run test-android-run-unit && yarn run test-android-run-instrumentation && yarn run test-android-run-e2e",
+    "test-android-instrumentation": "yarn run docker-build-android && yarn run test-android-run-instrumentation",
+    "test-android-unit": "yarn run docker-build-android && yarn run test-android-run-unit",
+    "test-android-e2e": "yarn run docker-build-android && yarn run test-android-run-e2e"
   },
   "dependencies": {
     "@shoutem/ui": "^0.23.4",
@@ -57,8 +57,9 @@
     "gl-react-native": "^3.14.0",
     "react": "16.3.1",
     "react-native": "0.55.4",
-    "react-native-camera": "^1.1.3",
+    "react-native-camera": "^1.1.4",
     "react-native-camera-kit": "^6.2.4",
+    "react-native-orientation": "^3.1.3",
     "react-native-webgl": "^0.8.0",
     "watchman": "^1.0.0"
   },
@@ -66,14 +67,14 @@
     "babel-jest": "22.4.4",
     "babel-preset-react-native": "4.0.0",
     "jest": "22.4.4",
-    "react-test-renderer": "16.3.1",
+    "jest-expo": "~27.0.0",
+    "react-devtools": "^3.2.3",
     "react-native-scripts": "1.14.0",
-    "jest-expo": "~27.0.0"
+    "react-test-renderer": "16.3.1"
   },
   "main": "./node_modules/react-native-scripts/build/bin/crna-entry.js",
   "jest": {
     "preset": "react-native",
-	
     "transform": {
       "^[./a-zA-Z0-9$_-]+\\.(bmp|gif|jpg|jpeg|mp4|png|psd|svg|webp)$": "<rootDir>/jest/assetFileTransformer.js",
       ".*": "./jest/preprocessor.js"
@@ -145,33 +146,30 @@
     ],
     "testEnvironment": "node"
   },
-  
-  
   "repository": {
-     "type": "git",
-     "url": "https://github.com/airbnb/react-native-maps"
-   },
-   "keywords": [
-     "react",
-     "react-native",
-     "react-component",
-     "map",
-     "mapview",
-     "google-maps",
-     "mapkit"
-   ],
-   "bin": {
-      "react-native": "local-cli/wrong-react-native.js"
-    },
-   "peerDependencies": {
-     "react": "^16.0",
-     "react-native": "^0.51 || ^0.52 || ^0.53 || ^0.54",
-     "prop-types": "^15.0 || ^16.0"
-   },
-   "rnpm": {
-      "android": {
-        "sourceDir": "./lib/android"
-      }
+    "type": "git",
+    "url": "https://github.com/airbnb/react-native-maps"
+  },
+  "keywords": [
+    "react",
+    "react-native",
+    "react-component",
+    "map",
+    "mapview",
+    "google-maps",
+    "mapkit"
+  ],
+  "bin": {
+    "react-native": "local-cli/wrong-react-native.js"
+  },
+  "peerDependencies": {
+    "react": "^16.0",
+    "react-native": "^0.51 || ^0.52 || ^0.53 || ^0.54",
+    "prop-types": "^15.0 || ^16.0"
+  },
+  "rnpm": {
+    "android": {
+      "sourceDir": "./lib/android"
     }
-  
+  }
 }

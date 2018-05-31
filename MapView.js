@@ -2,9 +2,9 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import {requireNativeComponent} from 'react-native';
 import {  NativeEventEmitter, NativeModules} from 'react-native';
-var RNTMap = NativeModules.RNTMapManager;
 
 class MapView extends React.Component {
+    
   _onRegionChange = (event) => {
     if (!this.props.onRegionChange) {
       return;
@@ -15,9 +15,8 @@ class MapView extends React.Component {
   }
   render() {
     return (
-      <RNTMap
-		region={this.props.region} 
-		zoomEnabled={this.props.zoomEnabled}
+  <RNTMap
+        {...this.props}
         onRegionChange={this._onRegionChange}
       />
     );
@@ -51,8 +50,12 @@ MapView.propTypes = {
     latitudeDelta: PropTypes.number.isRequired,
     longitudeDelta: PropTypes.number.isRequired,
   }),
+ /**
+   * Callback that is called continuously when the user is dragging the map.
+   */
+  onRegionChange: PropTypes.func
 };
 
-// var RNTMap = requireNativeComponent('RNTMap', MapView);
-
+// var RNTMap = NativeModules.RNTMapManager;
+var RNTMap = requireNativeComponent('RNTMap', MapView);
 module.exports = MapView;
