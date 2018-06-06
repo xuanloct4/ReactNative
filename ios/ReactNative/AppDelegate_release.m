@@ -5,15 +5,18 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-#import "ViewController.h"
 #import "AppDelegate.h"
-#import "Orientation.h"
-#import "RootViewUtilities.h"
 
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+#if DEBUG
+  NSLog(@"I'm running in DEBUG mode");
+#else
+  NSLog(@"I'm running in a non-DEBUG mode");
+#endif
+  
   self.launchOptions = launchOptions;
   NSURL * jsCodeLocation = [self jsLocationForConfiguration];
   
@@ -22,7 +25,7 @@
   NSDictionary *props = @{@"images" : imageList};
   
   RCTRootView *rootView = [RootViewUtilities rootViewWithLaunchingWithOptions:launchOptions initialProperties:props jsCodeLocation:jsCodeLocation];
-
+  
   self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
   
   UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
@@ -33,6 +36,7 @@
   //  [self.rootViewController.view addSubview:rootView];
   
   self.window.rootViewController = self.rootViewController;
+  [self.window makeKeyAndVisible];
   
   UIView* launchScreenView = [[[NSBundle mainBundle] loadNibNamed:@"LaunchScreen" owner:self options:nil] objectAtIndex:0];
   launchScreenView.frame = self.window.bounds;
@@ -42,15 +46,69 @@
 
 -(NSURL *)jsLocationForConfiguration {
   NSURL *jsCodeLocation;
-  //// For Developer
-  //jsCodeLocation = [RootViewUtilities jsLocationForRTCBundle:@"index" fallbackResource:nil fallbackExtension:nil];
-  
+  // For Developer
+#ifdef DEBUG
+  jsCodeLocation = [RootViewUtilities jsLocationForRTCBundle:@"index" fallbackResource:nil fallbackExtension:nil];
   // For Release
+#else
   jsCodeLocation = [RootViewUtilities jsLocationForMainBundle:@"main" extension:@"jsbundle"];
+#endif
+  
   return jsCodeLocation;
 }
 
 - (UIInterfaceOrientationMask)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window {
   return [Orientation getOrientation];
 }
+
+- (void)applicationDidBecomeActive:(UIApplication *)application
+{
+  [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0]; //Allways reset number of notifications shown at the icon
+  for (UILocalNotification * notification in [[UIApplication sharedApplication] scheduledLocalNotifications]) { //Also remove all shown notifications
+    if ([notification.fireDate compare:[NSDate date]] == NSOrderedAscending) {
+      [[UIApplication sharedApplication] cancelLocalNotification:notification];
+    }
+  }
+}
+
+// Required to register for notifications
+- (void)application:(UIApplication *)application didRegisterUserNotificationSettings:(UIUserNotificationSettings *)notificationSettings
+{
+  [RCTPushNotificationManager didRegisterUserNotificationSettings:notificationSettings];
+}
+// Required for the register event.
+- (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
+{
+  [RCTPushNotificationManager didRegisterForRemoteNotificationsWithDeviceToken:deviceToken];
+}
+// Required for the notification event. You must call the completion handler after handling the remote notification.
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
+fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
+{
+  [RCTPushNotificationManager didReceiveRemoteNotification:userInfo fetchCompletionHandler:completionHandler];
+}
+// Required for the registrationError event.
+- (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error
+{
+  [RCTPushNotificationManager didFailToRegisterForRemoteNotificationsWithError:error];
+}
+// Required for the localNotification event.
+- (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification
+{
+  [RCTPushNotificationManager didReceiveLocalNotification:notification];
+}
+
+////...........Handling delegate methods for UserNotifications........
+//Called when a notification is delivered to a foreground app.
+-(void)userNotificationCenter:(UNUserNotificationCenter *)center willPresentNotification:(UNNotification *)notification withCompletionHandler:(void (^)(UNNotificationPresentationOptions options))completionHandler{
+  NSLog(@"User Info : %@",notification.request.content.userInfo);
+  completionHandler(UNAuthorizationOptionSound | UNAuthorizationOptionAlert | UNAuthorizationOptionBadge);
+}
+
+//Called to let your app know which action was selected by the user for a given notification.
+-(void)userNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(void(^)())completionHandler{
+  NSLog(@"User Info : %@",response.notification.request.content.userInfo);
+  completionHandler();
+}
 @end
+

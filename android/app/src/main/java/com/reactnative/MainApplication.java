@@ -3,7 +3,9 @@ package com.reactnative;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.dieam.reactnativepushnotification.ReactNativePushNotificationPackage;
 import fr.greweb.rnwebgl.RNWebGLPackage;
+import io.realm.react.RealmReactPackage;
 import org.reactnative.camera.RNCameraPackage;
 import com.reactnative.photoview.PhotoViewPackage;
 import com.BV.LinearGradient.LinearGradientPackage;
@@ -27,6 +29,8 @@ public class MainApplication extends Application implements ReactApplication {
         @Override
         protected List<ReactPackage> getPackages() {
             return Arrays.<ReactPackage>asList(
+                    new RealmReactPackage(),
+                    new ReactNativePushNotificationPackage(),
                     new RNWebGLPackage(),
                     new RNCameraPackage(),
                     new LinearGradientPackage(),
